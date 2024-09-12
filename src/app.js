@@ -1,14 +1,14 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const argon2 = require("argon2");
-const query = require("./db.js"); 
+const query = require("./db.js");
 const router = express();
-const cors = require('cors');
+const cors = require("cors");
 const port = 8080;
 
 // Middleware body-parser pour traiter les requêtes JSON
 router.use(bodyParser.json());
-router.use(express.static("public"));
+router.use('/images', express.static('public/images'));
 router.use(cors());
 
 // Fonction pour valider l'adresse e-mail
@@ -30,29 +30,37 @@ router.get("/users", async (req, res) => {
     if (result.rowCount === 0) {
       return res.status(404).send("No user found");
     } else {
-     return res.send(result.rows);
+      return res.send(result.rows);
     }
-
   } catch (err) {
     console.log(err);
   }
 });
-
 
 // Route pour l'inscription
 router.post("/register", async (req, res) => {
   const { email, password, username } = req.body;
 
   if (!email || !password || !username) {
-    return res.status(400).send("L'email, le nom d'utilisateur et le mot de passe sont obligatoires");
+    return res
+      .status(400)
+      .send(
+        "L'email, le nom d'utilisateur et le mot de passe sont obligatoires"
+      );
   } else if (!checkEmail(email)) {
     return res.status(400).send("Adresse e-mail invalide");
   } else if (!checkPassword(password)) {
-    return res.status(400).send("Le mot de passe doit contenir au moins une lettre majuscule, une minuscule, un chiffre et un caractère spécial");
+    return res
+      .status(400)
+      .send(
+        "Le mot de passe doit contenir au moins une lettre majuscule, une minuscule, un chiffre et un caractère spécial"
+      );
   }
 
   try {
-    const userExists = await query("SELECT * FROM users WHERE email = $1", [email]);
+    const userExists = await query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
     if (userExists.rowCount > 0) {
       return res.status(409).send("L'utilisateur existe déjà");
     }
@@ -76,14 +84,16 @@ router.post("/login", async (req, res) => {
 
   if (!email || !password) {
     return res.status(400).send("L'email et le mot de passe sont obligatoires");
-  } else if (!checkEmail(email)) { 
+  } else if (!checkEmail(email)) {
     return res.status(400).send("Adresse e-mail invalide");
-  } else if (!checkPassword(password)) {  
+  } else if (!checkPassword(password)) {
     return res.status(400).send("Le mot de passe est invalide");
   }
-  
+
   try {
-    const user = await query("SELECT * FROM users WHERE email = $1", [email]);
+    const user = await query("SELECT password FROM users WHERE email = $1", [
+      email,
+    ]);
     if (user.rowCount === 0) {
       return res.status(404).send("Utilisateur non trouvé");
     }
@@ -97,32 +107,44 @@ router.post("/login", async (req, res) => {
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Erreur serveur" });
-  }  
+  }
 });
 
 // Route pour créer un article
-router.post("/articles", async (req, res) => { 
-  const {id_user, title, content, date_post, image, } = req.body;
+router.post("/articles", async (req, res) => {
+  const { username, title, content, image } = req.body;
 
-  if (!title || !content || !id_user) 
-{ return res.status(400).send("Le titre, le contenu et l'auteur sont obligatoires"); 
-
-} 
-try { 
-   
-const result = await query( "INSERT INTO articles (id_user, title, content, date_post, image) VALUES ($1, $2, $3, $4, $5) RETURNING *", [id_user, title, content, date_post, image] ); 
-return res.status(201).send(result.rows[0]); 
-} 
-  catch (err) 
-  { console.error(err); 
-
-  } 
+  if (!title || !content || !username) {
+    return res
+      .status(400)
+      .send("Le titre, le contenu et l'auteur sont obligatoires");
+  }
+  try {
+    const userExists = await query("select id from users where username = $1", [
+      username,
+    ]);
+    if (userExists.rowCount === 0) {
+      return res.status(404).send("Utilisateur non trouvé");
+    } else {
+      const result = await query(
+        "INSERT INTO articles (id_user, title, content, image) VALUES ($1, $2, $3, $4) RETURNING *",
+        [userExists.rows[0].id, title, content, image]
+      );
+      return res.status(201).send(result.rows[0]);
+    }
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 // Route pour récupérer tous les articles
 router.get("/articles", async (req, res) => {
   try {
-    const result = await query("SELECT * FROM articles");
+    const result = await query(`
+      SELECT image, title, date_post, users.username AS author 
+      FROM articles
+      JOIN users ON articles.id_user = users.id
+    `);
 
     if (result.rowCount === 0) {
       return res.status(404).json({ message: "Aucun article trouvé" });
@@ -140,12 +162,15 @@ router.get("/articles/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await query(`
-      SELECT articles.id, title, content, date_post, image, users.username 
+    const result = await query(
+      `
+      SELECT image, title, date_post, users.username AS author, content
       FROM articles
       JOIN users ON articles.id_user = users.id
       WHERE articles.id = $1
-    `, [id]);
+    `,
+      [id]
+    );
 
     if (result.rowCount === 0) {
       return res.status(404).json({ message: "Article non trouvé" });
