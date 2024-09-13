@@ -3,79 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Articles</title>
-  <link rel="stylesheet" href="../public/CSS/style.css">
+  <title>Liste des articles</title>
+  <link rel="stylesheet" href="../public/CSS/style.css"> 
 </head>
 <body>
-  <div class="articles-container">
-    <h2>Articles</h2>
-    <div id="articlesList"></div>
+  <a href="logout.html" class="logout">Déconnexion</a> 
+
+  <div class="articles-container"> 
+    <h2>Liste des articles</h2>
+    <a href="create-article.html" class="new-article-btn">Créer un nouvel article</a> 
+    <div id="articlesList"> 
+
+    </div>
   </div>
 
-
-  <script>
-    async function fetchArticles() {
-      try {
-        // Requête pour récupérer les articles depuis l'API
-        const res = await fetch('http://localhost:8080/articles');
-        const articles = await res.json(); // Transformer la réponse en JSON
-       
-
-        const articlesList = document.getElementById('articlesList');
-        articlesList.innerHTML = ''; // Vider le contenu existant
-
-        // Vérifier si un ID est présent dans l'URL pour afficher un article spécifique
-        const params = new URLSearchParams(window.location.search);
-        const articleId = params.get('id');
-
-        if (articleId) {
-          const res = await fetch(`http://localhost:8080/articles/${id}`);
-          const articles = await res.json();
-          // Afficher les détails de l'article spécifique
-          const article = articles.find(a => a.id == id);
-          if (article) {
-            articlesList.innerHTML = `
-              <h3>${article.title}</h3>
-              <p>Publié par ${article.author} le ${new Date(article.date_post).toLocaleDateString()}</p>
-              <img src="http://localhost:8080/images/${article.image}" alt="${article.title}">
-              <p>${article.content ? article.content : 'Pas de contenu disponible.'}</p>
-              <a href="articles.html">Retour à la liste des articles</a>
-            `;
-          } else {
-            articlesList.innerHTML = '<p>Aucun article trouvé.</p>';
-          }
-        } else {
-          // Afficher la liste des articles si aucun ID n'est dans l'URL
-          articles.forEach(article => {
-            const articleElement = document.createElement('div');
-            articleElement.classList.add('article');
-            
-            // Créer un élément <img> pour l'image de l'article
-            const imgElement = document.createElement('img');
-            imgElement.src = `http://localhost:8080/images/${article.image}`;
-            
-            // Vérifiez si article.content existe, sinon utilisez un texte par défaut
-            // const contentPreview = article.content ? article.content.substring(0, 200) : 'Pas de contenu disponible.';
-            
-            // Insérer l'image et les détails de l'article
-            articleElement.innerHTML = `
-              <h3><a href="articles.html?id=${article.id}">${article.title}</a></h3>
-              <p>Publié par ${article.author} le ${new Date(article.date_post).toLocaleDateString()}</p>
-              
-            `;
-            
-            // Ajouter l'image avant le texte
-            articleElement.insertBefore(imgElement, articleElement.firstChild);
-            articlesList.appendChild(articleElement);
-          });
-        }
-      } catch (error) {
-        console.error('Erreur lors de la récupération des articles', error);
-      }
-    }
-
-    // Récupérer les articles lorsque la page se charge
-    document.addEventListener('DOMContentLoaded', fetchArticles);
+  <script src="script.js">
+    
   </script>
 </body>
 </html>

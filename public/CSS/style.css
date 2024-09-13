@@ -1,5 +1,5 @@
 
-/* Styles de base */
+/* Style général du body */
 body {
   font-family: Arial, sans-serif;
   background-color: #f9f9f9;
@@ -7,60 +7,116 @@ body {
   padding: 0;
 }
 
-h2 {
-  text-align: center;
+/* Conteneur général pour login, register, create-article */
+.container-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-.login-container, .register-container {
-  max-width: 500px;
-  margin: 50px auto;
+/* Conteneur général des formulaires (login, register, create-article) */
+.container {
+  max-width: 400px;
+  width: 100%;
   padding: 20px;
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding-bottom: 20px; 
-}
-input {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin: 50px auto;
+  text-align: center; /* Assurer que tout est centré */
 }
 
+/* Titre centré */
+h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+/* Champs de formulaire plus petits et centrés */
+.form-group {
+  margin-bottom: 15px;
+  text-align: center; /* Centrer les champs */
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+/* Réduction de la taille des champs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="url"],
+textarea {
+  width: 80%; /* Réduction supplémentaire à 80% de la largeur */
+  padding: 8px 10px; /* Réduction du padding pour un look plus compact */
+  margin: 5px 0 15px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 14px; /* Taille de police réduite */
+}
+
+textarea {
+  height: 100px; /* Réduction de la hauteur de la zone de texte */
+  resize: vertical; /* Permettre le redimensionnement vertical */
+}
+
+/* Bouton plus petit et centré */
 button {
-  width: auto; /* Ajuste le bouton à sa taille minimale */
-  padding: 10px 20px;
+  width: 150px; /* Réduction de la largeur du bouton */
+  padding: 12px; /* Moins de padding pour un bouton plus compact */
   background-color: #007bff;
-  color: #fff;
+  color: white;
   border: none;
   border-radius: 5px;
+  font-size: 14px;
   cursor: pointer;
+  margin-top: 15px;
+  text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto; /* Assurer que le bouton est centré */
 }
 
 button:hover {
   background-color: #0056b3;
 }
 
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-}
-
-.logout {
-  color: white;
+/* Lien de retour ou inscription */
+a {
   text-decoration: none;
-  font-size: 16px;
+  color: #007bff;
+  font-size: 14px;
+  margin-top: 20px;
+  display: block;
 }
 
-.logout:hover {
+a:hover {
   text-decoration: underline;
 }
+
+/* Message de validation du mot de passe (register) */
+.validation-message {
+  font-size: 12px;
+  color: #666;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.validation-message ul {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+/* Style des articles inchangé */
 
 /* Conteneur des articles */
 .articles-container {
@@ -74,50 +130,160 @@ button:hover {
 
 /* Grille des articles */
 #articlesList {
-  display: grid; 
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-  grid-gap: 20px;
+  display: grid; /* Utilisation de grid pour une disposition en grille */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Ajustement dynamique en fonction de la taille de l'écran */
+  grid-gap: 20px; /* Espacement entre les articles */
 }
 
-/* Style des articles */
+/* Carte d'article individuelle */
 .article {
   background-color: #f1f1f1;
   border-radius: 8px;
   padding: 15px;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-  text-align: center; /* Centrer le texte */
+  text-align: center; /* Centrage du contenu */
 }
 
+/* Image des articles */
 .article img {
   width: 100%;
-  height: 200px; /* Hauteur fixe des images */
-  object-fit: cover; /* Maintenir les proportions des images */
-  border-radius: 5px;
+  height: 200px; /* Hauteur fixe pour toutes les images */
+  object-fit: cover; /* Maintien des proportions, remplissage du cadre */
+  border-radius: 5px; /* Bords arrondis des images */
 }
 
+/* Titre des articles */
 .article h3 {
   margin-top: 15px;
   font-size: 18px;
   font-weight: bold;
 }
 
+/* Description ou texte des articles */
 .article p {
   font-size: 14px;
   color: #666;
   margin: 5px 0;
 }
 
-/* Bouton de déconnexion */
-button {
-  width: auto;
+/* Bouton de création d'article */
+.new-article-btn {
+  display: block;
+  margin: 0 auto 20px;
   padding: 10px 20px;
   background-color: #007bff;
-  color: #fff;
-  border: none;
+  color: white;
+  text-decoration: none;
   border-radius: 5px;
-  cursor: pointer;
+  text-align: center;
+  width: fit-content;
 }
 
-button:hover {
+.new-article-btn:hover {
   background-color: #0056b3;
 }
+
+/* Lien de déconnexion */
+.message {
+  background-image: url('../image/soleil.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  height: 100vh; /* Prend 100% de la hauteur de la fenêtre */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 0; /* Ajustez selon les besoins */
+  color: orangered;
+  font-size: 50px;
+}
+
+.log {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: orange;
+  text-align: center; /* Centrer le texte */
+  padding: 20px; /* Ajoutez un peu d'espace autour du texte */
+  font-size: 30px;
+  font-style: italic;
+  border-radius: 10px; /* Ajoute des coins arrondis */
+}
+.logout {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  color: #007bff;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.logout:hover {
+  text-decoration: underline;
+}
+
+/* Style de l'article individuel inchangé */
+.detailArticle {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 50px 20px;
+  background-color: #f9f9f9;
+}
+
+/* Conteneur de l'article avec une disposition en colonne */
+.detailArticle-container {
+  display: flex;
+  flex-direction: column; /* Disposition en colonne */
+  max-width: 800px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 50px auto;
+}
+
+/* Style de l'image de l'article */
+.detailArticle img {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+/* Titre de l'article */
+.detailArticle-content h3 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Informations supplémentaires */
+.detailArticle-content .info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #777;
+}
+
+/* Contenu principal de l'article */
+.detailArticle-content .content {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #444;
+}
+

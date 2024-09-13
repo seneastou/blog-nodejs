@@ -8,7 +8,7 @@ const port = 8080;
 
 // Middleware body-parser pour traiter les requêtes JSON
 router.use(bodyParser.json());
-router.use('/images', express.static('public/images'));
+router.use('/images', express.static('public/image'));
 router.use(cors());
 
 // Fonction pour valider l'adresse e-mail
@@ -112,16 +112,16 @@ router.post("/login", async (req, res) => {
 
 // Route pour créer un article
 router.post("/articles", async (req, res) => {
-  const { username, title, content, image } = req.body;
+  const { title, content, image, author } = req.body;
 
-  if (!title || !content || !username) {
+  if (!title || !content || !author || !image) {
     return res
       .status(400)
-      .send("Le titre, le contenu et l'auteur sont obligatoires");
+      .send("Le titre, le contenu, l'auteur et l'image sont obligatoires");
   }
   try {
     const userExists = await query("select id from users where username = $1", [
-      username,
+      author,
     ]);
     if (userExists.rowCount === 0) {
       return res.status(404).send("Utilisateur non trouvé");
@@ -141,9 +141,9 @@ router.post("/articles", async (req, res) => {
 router.get("/articles", async (req, res) => {
   try {
     const result = await query(`
-      SELECT image, title, date_post, users.username AS author 
-      FROM articles
-      JOIN users ON articles.id_user = users.id
+      SELECT a.id, a.image, a.title, a.date_post, u.username AS author 
+      FROM articles a
+      JOIN users u ON a.id_user = u.id
     `);
 
     if (result.rowCount === 0) {
@@ -160,6 +160,11 @@ router.get("/articles", async (req, res) => {
 // Route pour récupérer un article spécifique par son ID
 router.get("/articles/:id", async (req, res) => {
   const { id } = req.params;
+
+  // Vérification de base pour s'assurer que l'ID est un nombre entier
+  if (isNaN(parseInt(id))) {
+    return res.status(400).json({ message: "ID invalide" });
+  }
 
   try {
     const result = await query(
