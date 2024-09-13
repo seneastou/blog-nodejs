@@ -1,49 +1,63 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Se connecter</title>
-  <link rel="stylesheet" href="../public/CSS/style.css"> <!-- Utilisation de votre fichier CSS -->
-</head>
-<body>
-  <div class="container"> <!-- Utilisation de "container" pour uniformité avec register et create-article -->
-    <h2>Se connecter</h2>
-    <form id="loginForm">
-      <div class="form-group">
-        <input type="email" id="email" placeholder="Adresse e-mail" required />
-      </div>
-      <div class="form-group">
-        <input type="password" id="password" placeholder="Mot de passe" required />
-      </div>
-      <button type="submit">Se connecter</button>
-    </form>
-    <p>Pas encore inscrit ? <a href="register.html">Inscrivez-vous</a></p>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Se connecter</title>
+    <link rel="stylesheet" href="../public/CSS/style.css" />
+    <!-- Utilisation de votre fichier CSS -->
+  </head>
+  <body>
+    <div class="container">
+      <!-- Utilisation de "container" pour uniformité avec register et create-article -->
+      <h2>Se connecter</h2>
+      <form id="loginForm">
+        <div class="form-group">
+          <input
+            type="email"
+            id="email"
+            placeholder="Adresse e-mail"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            id="password"
+            placeholder="Mot de passe"
+            required
+          />
+        </div>
+        <button type="submit">Se connecter</button>
+      </form>
+      <p>Pas encore inscrit ? <a href="register.html">Inscrivez-vous</a></p>
+    </div>
 
-  <script>
-    document.getElementById('loginForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      
-      try {
-        const res = await fetch('http://localhost:8080/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+
+          try {
+            const res = await fetch("http://localhost:8080/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password }),
+            });
+
+            if (res.ok) {
+              alert("Connexion réussie");
+              window.location.href = "articles.html"; // Rediriger vers la page des articles
+            } else {
+              alert("Erreur de connexion");
+            }
+          } catch (error) {
+            console.error(error);
+          }
         });
-
-        if (res.ok) {
-          alert('Connexion réussie');
-          window.location.href = 'articles.html'; // Rediriger vers la page des articles
-        } else {
-          alert('Erreur de connexion');
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>

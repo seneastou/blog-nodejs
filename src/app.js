@@ -8,7 +8,7 @@ const port = 8080;
 
 // Middleware body-parser pour traiter les requêtes JSON
 router.use(bodyParser.json());
-router.use('/images', express.static('public/image'));
+router.use("/images", express.static("public/image"));
 router.use(cors());
 
 // Fonction pour valider l'adresse e-mail

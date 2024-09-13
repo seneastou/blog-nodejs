@@ -1,77 +1,110 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Créer un nouvel article</title>
-  <link rel="stylesheet" href="../public/CSS/style.css"> 
-</head>
-<body>
-  <div class="form-container">
-    <h2>Créer un nouvel article</h2>
-    <form id="createArticleForm" enctype="multipart/form-data">
-      <div class="form-group">
-        <label for="title">Titre de l'article</label>
-        <input type="text" id="title" name="title" placeholder="Entrez le titre de l'article" required>
-      </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Créer un nouvel article</title>
+    <link rel="stylesheet" href="../public/CSS/style.css" />
+  </head>
+  <body>
+    <div class="form-container">
+      <h2>Créer un nouvel article</h2>
+      <form id="createArticleForm" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="title">Titre de l'article</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Entrez le titre de l'article"
+            required
+          />
+        </div>
 
-      <div class="form-group">
-        <label for="content">Contenu de l'article</label>
-        <textarea id="content" name="content" placeholder="Entrez le contenu de l'article" required></textarea>
-      </div>
+        <div class="form-group">
+          <label for="content">Contenu de l'article</label>
+          <textarea
+            id="content"
+            name="content"
+            placeholder="Entrez le contenu de l'article"
+            required
+          ></textarea>
+        </div>
 
-      <div class="form-group">
-        <label for="author">Auteur</label>
-        <input type="text" id="author" name="author" placeholder="Entrez le nom de l'auteur" required>
-      </div>
+        <div class="form-group">
+          <label for="author">Auteur</label>
+          <input
+            type="text"
+            id="author"
+            name="author"
+            placeholder="Entrez le nom de l'auteur"
+            required
+          />
+        </div>
 
-      <div class="form-group">
-        <label for="image">Image de l'article</label>
-        <input type="file" id="image" name="image" accept="image/*" required>
-      </div>
+        <div class="form-group">
+          <label for="image">Image de l'article</label>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            accept="image/*"
+            required
+          />
+        </div>
 
-      <button type="submit">Créer l'article</button>
-    </form>
-    <a href="articles.html">Retour à la liste des articles</a> <!-- Lien pour revenir à la liste des articles -->
-  </div>
+        <button type="submit">Créer l'article</button>
+      </form>
+      <a href="articles.html">Retour à la liste des articles</a>
+      <!-- Lien pour revenir à la liste des articles -->
+    </div>
 
-  <script>
-    document.getElementById('createArticleForm').addEventListener('submit', async function(event) {
-      event.preventDefault(); // Empêche le rechargement de la page
+    <script>
+      document
+        .getElementById("createArticleForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault(); // Empêche le rechargement de la page
 
-      // Récupérer les données du formulaire
-      const form = document.getElementById('createArticleForm');
-      const formData = new FormData(form); // Utilisation de FormData pour gérer les fichiers
-      formData.append('title', document.getElementById('title').value);
-      formData.append('content', document.getElementById('content').value);
-      formData.append('author', document.getElementById('author').value);
-      formData.append('image', document.getElementById('image').files[0].name); // Ajout de l'image
-      const title = document.getElementById('title').value;
-      const content = document.getElementById('content').value;
-      const author = document.getElementById('author').value;
-      const image = document.getElementById('image').files[0].name; // Ajout de l'image
-      try {
-        const res = await fetch('http://localhost:8080/articles', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ title: title, content: content, author: author, image: image }),
+          // Récupérer les données du formulaire
+          const form = document.getElementById("createArticleForm");
+          const formData = new FormData(form); // Utilisation de FormData pour gérer les fichiers
+          formData.append("title", document.getElementById("title").value);
+          formData.append("content", document.getElementById("content").value);
+          formData.append("author", document.getElementById("author").value);
+          formData.append(
+            "image",
+            document.getElementById("image").files[0].name
+          ); // Ajout de l'image
+          const title = document.getElementById("title").value;
+          const content = document.getElementById("content").value;
+          const author = document.getElementById("author").value;
+          const image = document.getElementById("image").files[0].name; // Ajout de l'image
+          try {
+            const res = await fetch("http://localhost:8080/articles", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                title: title,
+                content: content,
+                author: author,
+                image: image,
+              }),
+            });
+
+            if (res.ok) {
+              alert("Article créé avec succès !");
+              window.location.href = "articles.html"; // Redirection vers la liste des articles
+            } else {
+              const errorData = await res.text();
+              alert("Erreur : " + errorData);
+            }
+          } catch (error) {
+            console.error("Erreur lors de la création de l'article:", error);
+            alert("Erreur lors de la création de l'article.");
+          }
         });
-
-        if (res.ok) {
-          alert('Article créé avec succès !');
-          window.location.href = 'articles.html'; // Redirection vers la liste des articles
-        } else {
-          const errorData = await res.text();
-          alert('Erreur : ' + errorData);
-        }
-      } catch (error) {
-        console.error('Erreur lors de la création de l\'article:', error);
-        alert('Erreur lors de la création de l\'article.');
-      }
-    });
-  </script>
-  
-</body>
+    </script>
+  </body>
 </html>
