@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Créer un nouvel article</title>
+    <link rel="stylesheet" href="../../public/CSS/style.css" />
+  </head>
+  <body>
+    <div class="form-container">
+      <h2>Créer un nouvel article</h2>
+      <form id="createArticleForm" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="title">Titre de l'article</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Entrez le titre de l'article"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="content">Contenu de l'article</label>
+          <textarea
+            id="content"
+            name="content"
+            placeholder="Entrez le contenu de l'article"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="author">Auteur</label>
+          <input
+            type="text"
+            id="author"
+            name="author"
+            placeholder="Entrez le nom de l'auteur"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="image">Image de l'article</label>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            accept="image/*"
+            required
+          />
+        </div>
+
+        <button type="submit">Créer l'article</button>
+      </form>
+      <a href="../article/articles.html">Retour à la liste des articles</a>
+      <!-- Lien pour revenir à la liste des articles -->
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
