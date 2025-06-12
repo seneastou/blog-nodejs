@@ -48,7 +48,7 @@ async function fetchArticleById(articleId) {
     let articleDetail = document.getElementById("articleDetail");
     if(articleDetail) {  
       articleDetail.innerHTML = ""; // Vider le contenu existant
-
+ 
       // Afficher les détails de l'article
       articleDetail.innerHTML = `
         <h3>${article.title}</h3>
@@ -67,8 +67,6 @@ async function fetchArticleById(articleId) {
     }
   } catch (error) {
     console.error("Erreur lors de la récupération de l'article", error);
-    // document.getElementById("articleDetail").innerHTML =
-    //   "<p>Erreur lors de la récupération de l'article. Veuillez réessayer plus tard.</p>";
   }
 }
 function initPage() {
@@ -78,8 +76,7 @@ function initPage() {
   if (articleId) {
     fetchArticleById(articleId); // Appeler la fonction pour afficher l'article
   } else {
-    document.getElementById("articleDetail").innerHTML =
-      "<p>ID de l'article manquant dans l'URL.</p>";
+    console.error("ID de l'article manquant dans l'URL.");
   }
 }
 // Récupérer les articles lorsque la page se charge

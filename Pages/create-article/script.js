@@ -1,6 +1,5 @@
-document
-        .getElementById("createArticleForm")
-        .addEventListener("submit", async function (event) {
+
+document.getElementById("createArticleForm").addEventListener("submit", async function (event) {
           event.preventDefault(); // Empêche le rechargement de la page
 
           // Récupérer les données du formulaire
@@ -10,8 +9,8 @@ document
           formData.append("content", document.getElementById("content").value);
           formData.append("author", document.getElementById("author").value);
           formData.append(
-            "image",
-            document.getElementById("image").files[0].name
+            // @ts-ignore
+            "image", document.getElementById("image").files[0].name
           ); // Ajout de l'image
           const title = document.getElementById("title").value;
           const content = document.getElementById("content").value;
