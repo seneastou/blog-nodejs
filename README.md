@@ -120,3 +120,6 @@ POSTGRES_DB=blog
  Auteur
 
 Projet réalisé par Astou Fall SENE 
+
+![alt text](loginnode.PNG)
+![alt text](pageRegister.PNG)
